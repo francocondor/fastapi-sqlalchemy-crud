@@ -10,7 +10,7 @@ key = Fernet.generate_key()
 f = Fernet(key)
 
 
-@user.get('/')
+@user.get('/', tags=['users'])
 async def get_users():
     stmt = select(users)
     result = conn.execute(stmt).fetchall()
@@ -18,7 +18,7 @@ async def get_users():
     return {'msg': 'Get Users', 'data': users_list}
 
 
-@user.get('/{user_id}')
+@user.get('/{user_id}', tags=['users'])
 async def read_user(user_id: int):
     stmt = select(users).where(users.c.id == user_id)
     result = conn.execute(stmt).fetchone()
@@ -27,7 +27,7 @@ async def read_user(user_id: int):
     return {'msg': f'Read User {user_id}', 'data': dict(result._mapping)}
 
 
-@user.post('/')
+@user.post('/', tags=['users'])
 async def create_user(user: User):
     new_user = {"name": user.name, "email": user.email}
     new_user['password'] = f.encrypt(user.password.encode("utf-8"))
@@ -37,7 +37,7 @@ async def create_user(user: User):
     return {'msg': 'User created', 'id': result.inserted_primary_key[0]}
 
 
-@user.put('/{user_id}')
+@user.put('/{user_id}', tags=['users'])
 async def update_user(user_id: int, user: User):
     stmt = select(users).where(users.c.id == user_id)
     result = conn.execute(stmt).fetchone()
@@ -54,7 +54,7 @@ async def update_user(user_id: int, user: User):
     return {'msg': f'User {user_id} updated'}
 
 
-@user.delete('/{user_id}')
+@user.delete('/{user_id}', tags=['users'])
 async def delete_user(user_id: int):
     stmt = select(users).where(users.c.id == user_id)
     result = conn.execute(stmt).fetchone()

@@ -9,11 +9,11 @@ pip install fastapi uvicorn sqlalchemy pymysql cryptography
 
 # Commands
 
-```powershell
 Ingresar al intorno virtual:
-```
 
+```powershell
 ./venv/Scripts/activate.ps1
+```
 
 Levantar api:
 
